@@ -172,10 +172,16 @@
       </form>
       <br />
       <h3>Delete issue on <i>apitest</i></h3>
-      <form id="testForm3" class="border" method="POST" action="/api/issues/apitest">
+      <form
+        id="testForm3"
+        class="border"
+        method="POST"
+        onsubmit="deleteIssue()"
+      >
+        <!-- action="/api/issues/apitest" -->
         <input
           type="text"
-          id="_id"
+          id="_id deleteID"
           name="_id"
           placeholder="_id"
           style="width: 100px"
