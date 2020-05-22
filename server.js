@@ -8,7 +8,7 @@ const apiRoutes = require("./routes/api.js"),
   fccTestingRoutes = require("./routes/fcctesting.js"),
   runner = require("./test-runner");
 
-// user story 1
+// user story 1 (prevent xss)
 const helmet = require("helmet");
 app.use(helmet());
 
