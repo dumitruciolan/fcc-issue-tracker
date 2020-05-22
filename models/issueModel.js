@@ -2,18 +2,18 @@
 
 const mongoose = require("mongoose");
 
-// set user schema & model
+// set user schema & model (user stories 2 & 3)
 const IssueSchema = new mongoose.Schema({
-  project: String,
-  issue_title: String,
-  issue_text: String,
-  created_on: Date,
-  updated_on: Date,
-  created_by: String,
-  assigned_to: String,
-  open: Boolean,
-  status_text: String
-}),
+    project: { type: String, required: true },
+    issue_title: { type: String, required: true },
+    issue_text: { type: String, required: true },
+    created_on: { type: Date, default: new Date() },
+    updated_on: { type: Date, default: new Date() },
+    created_by: { type: String, required: true },
+    assigned_to: { type: String, default: "" },
+    open: { type: Boolean, default: true },
+    status_text: { type: String, default: "" }
+  }),
   Issue = mongoose.model("Issue", IssueSchema);
 
 // connect to the database

@@ -172,16 +172,10 @@
       </form>
       <br />
       <h3>Delete issue on <i>apitest</i></h3>
-      <form
-        id="testForm3"
-        class="border"
-        method="POST"
-        onsubmit="deleteIssue()"
-      >
-        <!-- action="/api/issues/apitest" -->
+      <form id="testForm3" class="border" method="POST">
         <input
           type="text"
-          id="_id deleteID"
+          id="_id"
           name="_id"
           placeholder="_id"
           style="width: 100px"
@@ -194,56 +188,51 @@
     <hr style="margin: 50px; margin-top: 200px" />
     <!-- Your web-app is https, so your scripts need to be too -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-      $(function() {
-        $("#testForm").submit(function(e) {
+      $(() => {
+        const formData = new FormData(form),
+          response = document.getElementById("jsonResult"),
+          _id = document.querySelector("#_id").value,
+          jsonData = Object.fromEntries(formData);
+
+        $("#testForm").submit(e => {
           e.preventDefault();
           const form = document.querySelector("#testForm");
-          const formData = new FormData(form);
-          const jsonData = Object.fromEntries(formData);
-          const response = document.getElementById("jsonResult");
           axios
             .post("/api/issues/apitest", jsonData)
-            .then(res => {
-              response.innerHTML = JSON.stringify(res.data);
-            })
-            .catch(error => {
-              response.innerHTML = JSON.stringify(error.response.data);
-            });
+            .then(res => (response.innerHTML = JSON.stringify(res.data)))
+            .catch(
+              error =>
+                (response.innerHTML = JSON.stringify(error.response.data))
+            );
           form.reset();
           return false;
         });
-        $("#testForm2").submit(function(e) {
+
+        $("#testForm2").submit(e => {
           $.ajax({
             url: "/api/issues/apitest",
             type: "put",
             data: $("#testForm2").serialize(),
-            success: function(data) {
-              $("#jsonResult").text(JSON.stringify(data));
-            }
+            success: data => $("#jsonResult").text(JSON.stringify(data))
           });
           e.preventDefault();
         });
-        $("#testForm3").submit(function(e) {
+
+        $("#testForm3").submit(e => {
           e.preventDefault();
           const form = document.querySelector("#testForm3");
-          const formData = new FormData(form);
-          const jsonData = Object.fromEntries(formData);
-          const _id = document.querySelector("#_id").value;
-          const response = document.getElementById("jsonResult");
           axios
             .delete("/api/issues/apitest", {
               data: {
                 _id
               }
             })
-            .then(res => {
-              response.innerHTML = JSON.stringify(res.data);
-            })
-            .catch(error => {
-              response.innerHTML = JSON.stringify(error.response.data);
-            });
+            .then(res => (response.innerHTML = JSON.stringify(res.data)))
+            .catch(
+              error =>
+                (response.innerHTML = JSON.stringify(error.response.data))
+            );
           form.reset();
           return false;
         });
