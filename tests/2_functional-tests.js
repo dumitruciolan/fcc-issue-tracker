@@ -1,5 +1,6 @@
 // -----[Keep the tests in the same order!]-----
 // if additional are added, keep them at the very end!
+let id1, id2;
 
 const server = require("../server"),
   chaiHttp = require("chai-http"),
@@ -8,8 +9,6 @@ const server = require("../server"),
 chai.use(chaiHttp);
 
 suite("Functional Tests", () => {
-  let id1, id2;
-
   // functional test 1
   suite("POST /api/issues/{project} => object with issue data", () => {
     test("1. Every field filled in", done => {
@@ -45,25 +44,10 @@ suite("Functional Tests", () => {
           assert.equal(res.body.assigned_to, "Chai and Mocha");
           assert.equal(res.body.status_text, "In QA");
           assert.equal(res.body.open, true);
-        
+
           id1 = res.body._id;
 
           done();
-
-          // chai
-          //   .request(server)
-          //   .post("/api/issues/test")
-          //   .send({
-          //     issue_title: "Title",
-          //     issue_text: "text",
-          //     created_by: "Functional Test - Every field filled in",
-          //     assigned_to: "Chai and Mocha",
-          //     status_text: "In QA"
-          //   })
-          //   .end((err, res) => {
-
-          //     done();
-          //   });
         });
     });
 
@@ -145,26 +129,13 @@ suite("Functional Tests", () => {
         .put("/api/issues/test")
         .send({
           _id: id1,
-          issue_text: "updated text"
+          issue_title: "Title updated"
         })
         .end((err, res) => {
           assert.equal(res.status, 200);
           assert.equal(res.text, "successfully updated");
           done();
         });
-
-      // chai
-      //   .request(server)
-      //   .put("/api/issues/")
-      //   .send({
-      //     issue_title: "Title updated"
-      //   })
-      //   .end((err, res) => {
-      //     assert.equal(res.status, 200);
-      //     assert.isArray(res.body);
-      //     assert.equal(res.body.issue_title, "Title updated");
-      //     done();
-      //   });
     });
 
     // functional test 6
@@ -174,6 +145,8 @@ suite("Functional Tests", () => {
         .put("/api/issues/test")
         .send({
           _id: id2,
+          issue_title: "Title updated",
+          issue_text: "text updated",
           status_text: "issue resolved",
           open: false
         })
@@ -182,21 +155,6 @@ suite("Functional Tests", () => {
           assert.equal(res.text, "successfully updated");
           done();
         });
-
-      // chai
-      //   .request(server)
-      //   .put("/api/issues/")
-      //   .send({
-      //     issue_title: "Title updated",
-      //     issue_text: "text updated"
-      //   })
-      //   .end((err, res) => {
-      //     assert.equal(res.status, 200);
-      //     assert.isArray(res.body);
-      //     assert.equal(res.body.issue_title, "Title updated");
-      //     assert.equal(res.body.issue_text, "text updated");
-      //     done();
-      //   });
     });
   });
 
@@ -283,13 +241,13 @@ suite("Functional Tests", () => {
 
     // functional test 11
     test("11. Valid _id", done => {
-      // Delete the other (ID 2) before we begin.
+      // Delete the id2 database entry.
       chai
         .request(server)
         .delete("/api/issues/test")
         .send({ _id: id2 });
 
-      // The test based on the first ID.
+      // Delete the id1 database entry.
       chai
         .request(server)
         .delete("/api/issues/test")
